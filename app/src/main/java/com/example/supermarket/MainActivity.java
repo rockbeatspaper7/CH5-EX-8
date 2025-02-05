@@ -1,6 +1,9 @@
 package com.example.supermarket;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,5 +25,14 @@ public class MainActivity extends AppCompatActivity {
 
             //test
         });
+        initRateButton();
     }
+        protected void initRateButton() {
+            Button rateButton = findViewById(R.id.rateIntentButton);
+            rateButton.setOnClickListener(b -> {
+                Intent intent = new Intent(MainActivity.this, RateActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            });
+        }
 }
