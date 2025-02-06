@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             //test
         });
         initRateButton();
+        initTextChangedEvents();
     }
     protected void initRateButton() {
         Button rateButton = findViewById(R.id.rateIntentButton);

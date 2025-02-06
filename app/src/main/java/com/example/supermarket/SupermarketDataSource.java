@@ -21,17 +21,17 @@ public class SupermarketDataSource {
         dbHelper.close();
     }
 
-    public boolean insertContact(SupermarketInfo s) {
+    public boolean insertMarket(SupermarketInfo s) {
         boolean didSucceed = false;
         try {
             ContentValues initialValues = new ContentValues();
-            initialValues.put("contactname", s.getMarketName());
+            initialValues.put("marketname", s.getMarketName());
             initialValues.put("streetaddress", s.getAddress());
             initialValues.put("city", s.getCity());
             initialValues.put("state", s.getState());
             initialValues.put("zipcode", s.getZipcode());
 
-            long result = database.insert("market", null, initialValues);
+            long result = database.insert("markets", null, initialValues);
 
             if (result > 0) {
                 didSucceed = true;
@@ -43,18 +43,18 @@ public class SupermarketDataSource {
         }
         return didSucceed;
     }
-    public boolean updateContact(SupermarketInfo s) {
+    public boolean updateMarket(SupermarketInfo s) {
         boolean didSucceed = false;
         try {
             Long rowId = s.getId();
             ContentValues updateValues = new ContentValues();
-            updateValues.put("contactname", s.getMarketName());
+            updateValues.put("marketname", s.getMarketName());
             updateValues.put("streetaddress", s.getAddress());
             updateValues.put("city", s.getCity());
             updateValues.put("state", s.getState());
             updateValues.put("zipcode", s.getZipcode());
 
-            int rowsUpdated = database.update("market", updateValues, "_id=" + rowId, null);
+            int rowsUpdated = database.update("markets", updateValues, "_id=" + rowId, null);
 
             if (rowsUpdated > 0) {
                 didSucceed = true;
@@ -68,10 +68,10 @@ public class SupermarketDataSource {
         return didSucceed;
     }
 
-    public int getLastContactID() {
+    public int getLastID() {
         int lastId;
         try {
-            String query = "Select MAX (_id) from market";
+            String query = "Select MAX(_id) from markets";
             Cursor cursor = database.rawQuery(query, null);
 
             cursor.moveToFirst();

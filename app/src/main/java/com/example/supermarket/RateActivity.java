@@ -2,6 +2,7 @@ package com.example.supermarket;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -38,6 +39,8 @@ public class RateActivity extends AppCompatActivity {
 
         initGoBackButton();
         initSaveButton();
+        updateAverageRating();
+        setRatingChangeListener();
     }
 
     protected void initGoBackButton() {
@@ -51,7 +54,7 @@ public class RateActivity extends AppCompatActivity {
 
 
     private void updateAverageRating() {
-        displayAverage = findViewById(R.id.total);
+        displayAverage = findViewById(R.id.averageView);
         r1 = findViewById(R.id.ratingBar);
         r2 = findViewById(R.id.ratingBar2);
         r3 = findViewById(R.id.ratingBar3);
@@ -77,26 +80,38 @@ public class RateActivity extends AppCompatActivity {
     private void initSaveButton() {
         Button saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(v -> {
-            boolean wasSuccessful;
+            boolean wasSuccessful = false;
             SupermarketDataSource ds = new SupermarketDataSource(RateActivity.this);
             try {
                 ds.open();
 
                 if (currentSupermarket.getId() == -1) {
-                    wasSuccessful = ds.insertContact(currentSupermarket);
-                    int newId = ds.getLastContactID();
-                    currentSupermarket.setId(newId);
+                    wasSuccessful = ds.insertMarket(currentSupermarket);
+                    if (wasSuccessful) {
+                        int newId = ds.getLastID();
+                        currentSupermarket.setId(newId);
+                        Log.d("RateActivity", "Supermarket inserted successfully with ID: " + newId);
+                    } else {
+                        Log.e("RateActivity", "Failed to insert supermarket");
+                    }
+                } else {
+                    wasSuccessful = ds.updateMarket(currentSupermarket);
+                    if (wasSuccessful) {
+                        Log.d("RateActivity", "Supermarket updated successfully with ID: " + currentSupermarket.getId());
+                    } else {
+                        Log.e("RateActivity", "Failed to update supermarket");
+                    }
                 }
-                else {
-                    wasSuccessful = ds.updateContact(currentSupermarket);
-                }
+
                 ds.close();
             } catch (Exception e) {
-                wasSuccessful = false;
+                Log.e("RateActivity", "Database operation failed", e);
             }
 
+            if (!wasSuccessful) {
+                Log.e("RateActivity", "Save operation was unsuccessful");
+            }
         });
     }
-
 
 }

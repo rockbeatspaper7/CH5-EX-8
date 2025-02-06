@@ -4,7 +4,7 @@ import android.content.Context;
     import android.database.sqlite.SQLiteOpenHelper;
     import android.util.Log;
     public class SupermarketDBHelper extends SQLiteOpenHelper{
-        private static final String DATABASE_NAME = "mycontacts.db";
+        private static final String DATABASE_NAME = "marketrater.db";
         private static final int DATABASE_VERSION = 1;
 
         private static final String CREATE_TABLE_MARKETS =
@@ -26,7 +26,7 @@ import android.content.Context;
             Log.w(SupermarketDBHelper.class.getName(),
                     "Upgrading database from version " + oldVersion + " to "
                             + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS market");
+            db.execSQL("DROP TABLE IF EXISTS markets");
             onCreate(db);
         }
     }
